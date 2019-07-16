@@ -40,6 +40,7 @@ public class Dictionary
 
 //                        try-cathch
                         words.insert(new WordMeaning(word));
+                        words.insertMeaning(new WordMeaning(meaning)); 
                         break;
 
                     // Show List(s).    

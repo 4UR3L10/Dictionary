@@ -2,12 +2,12 @@ package dictionary;
 
 public class WordMeaningNode
 {
-    WordMeaning book;
+    WordMeaning word;
     WordMeaningNode next;
 
-    WordMeaningNode(WordMeaning b)
+    WordMeaningNode(WordMeaning w)
     {
-        book = b;
+        word = w;
         next = null;
     }
 
