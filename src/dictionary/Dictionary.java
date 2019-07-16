@@ -1,6 +1,8 @@
 package dictionary;
 
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public class Dictionary
 {
@@ -15,7 +17,7 @@ public class Dictionary
         boolean endLoop = false;
 
         // Create a book list object.
-//        BookList books = new BookList();
+        WordList words = new WordList();
 
         while (!endLoop)
         {
@@ -32,15 +34,22 @@ public class Dictionary
                 {
                     // Accept word with meaning.
                     case 1:
-                        display("Not Defined Yet", "Alert!", JOptionPane.PLAIN_MESSAGE);
+                        // Getting the user input as String.
+                        String word = JOptionPane.showInputDialog("Enter the Word:");
+                        String meaning = JOptionPane.showInputDialog("Enter the Definition:");
+
+//                        try-cathch
+                        words.insert(new WordMeaning(word));
                         break;
-                        
-                    // Show List.    
+
+                    // Show List(s).    
                     case 2:
-                        display("Not Defined Yet", "Alert!", JOptionPane.PLAIN_MESSAGE);
+//                        display("Not Defined Yet", "Alert!", JOptionPane.PLAIN_MESSAGE);
+                        // Showing the Attributes of the File in a Scroll Pane
+                        showScrollPane(words.toString(), "Input File Attributes", JOptionPane.INFORMATION_MESSAGE);
                         break;
                         
-                    // Show List.    
+                    // Remove From The List.    
                     case 3:
                         display("Not Defined Yet", "Alert!", JOptionPane.PLAIN_MESSAGE);
                         break;    
@@ -75,5 +84,13 @@ public class Dictionary
     static void display(String message, String windowsName, int typeOfMessage)
     {
         JOptionPane.showMessageDialog(null, message, windowsName, typeOfMessage);
+    }
+    
+    // Method for the scroll pane.
+    static void showScrollPane(String resultString, String heading, int MESSAGE_TYPE)
+    {
+        JTextArea textAreaObject = new JTextArea(resultString, 20, 50);
+        JScrollPane scrollPaneObject = new JScrollPane(textAreaObject);
+        JOptionPane.showMessageDialog(null, scrollPaneObject, heading, MESSAGE_TYPE);
     }
 }
