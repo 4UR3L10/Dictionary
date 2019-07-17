@@ -121,6 +121,18 @@ public class WordList
 //        }
     }
 
+//    public String toString()
+//    {
+//        String result = "";
+//        WordMeaningNode current = list;
+//
+//        while (current != null)
+//        {
+//            result += current.word.getTitle() + ",  ";
+//            current = current.next;
+//        }
+//        return result;
+//    }
     public String toString()
     {
         String result = "";
@@ -128,8 +140,15 @@ public class WordList
 
         while (current != null)
         {
-            result += current.word.getTitle() + ",  ";
-            current = current.next;
+            if (current.word.getTitle().charAt(0) == '-')
+            {
+                result += current.word.getTitle() + "\n";
+                current = current.next;
+            } else
+            {
+                result += current.word.getTitle() + " ";
+                current = current.next;
+            }
         }
         return result;
     }
