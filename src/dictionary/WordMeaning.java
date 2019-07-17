@@ -9,7 +9,7 @@ public class WordMeaning
         this.wordName = wn;
     }
 
-    public String getTitle()
+    public String getString()
     {
         return wordName;
     }
