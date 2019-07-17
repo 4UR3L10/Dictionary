@@ -57,25 +57,65 @@ public class WordList
         back = temp;
         // The next node of the back is now the current.
         current = back.next;
-                
+
         /* 
         Doing the insertion of the definition next to the word
         without losing any nodes of the linkedlist.
-        */
+         */
         tempd.next = current;
         back.next = tempd;
         
-        /*Asking to insert another definition.*/       
+        /*Asking to insert another definition.*/
         int tempValue = 0;
-        
+
+        // Boolean to stop while loop.
+        boolean endLoop = false;
+
+        // Getting the last word as a node.
+        WordMeaningNode lastWord = new WordMeaningNode(back.word);
+
+        // Second back node.
+        WordMeaningNode backSecond = null;//       testing----------------------------------------------------------------
+
+        current = lastWord.next;//      testing----------------------------------------------------------------
+
         // Keep adding definitions until user want it.
         do
         {
             tempValue = askAnother();
-            
-            if(tempValue == 1)
+
+            if (tempValue == 1)
             {
-                
+                String meaning = JOptionPane.showInputDialog("Enter the Definition:");
+
+                // Creating one temp nodes that hold the word and defintion.
+                WordMeaningNode tempDefin = new WordMeaningNode(new WordMeaning(meaning));
+
+                // While there is nodes go throught the linkedlist.
+                while (current.word.getString().charAt(0) == '-' && !endLoop)//      testing----------------------------------------------------------------
+                {
+                    // Comparing the word with the nodes values to sort.
+                    if (tempDefin.word.getString().compareTo(current.word.getString()) < 0)//      testing----------------------------------------------------------------
+                    {
+                        endLoop = true;
+                    } else
+                    {
+                        backSecond = current;//      testing----------------------------------------------------------------
+                        current = current.next;//      testing----------------------------------------------------------------
+                    }
+                }
+
+                // Hold nodes so we don't erase part of the linked list.
+                tempDefin.next = current;//      testing----------------------------------------------------------------
+
+                if (backSecond == null)//      testing----------------------------------------------------------------
+                {
+                    list = tempDefin;//      testing----------------------------------------------------------------
+                } else//      testing----------------------------------------------------------------
+                {
+                    // Finish the joining.//      testing----------------------------------------------------------------
+                    backSecond.next = tempDefin;//      testing----------------------------------------------------------------
+                }
             }
         } while (tempValue == 1);
 
@@ -146,6 +186,14 @@ public class WordList
             }
         }
         return convertedChoice;
+    }
+    
+    public void insertMultipleDef()
+    {
+        
+        
+        
+        
     }
     
 //    void add(WordMeaning w)// pre-pending
