@@ -31,7 +31,7 @@ public class WordList
     }
 
     void insert(WordMeaning w) // Insert in proper place -- Sorting
-    {
+     {
         WordMeaningNode temp = new WordMeaningNode(w);
 
         if (list == null)
@@ -69,44 +69,33 @@ public class WordList
     }   
     
     
-    void insertMeaning(WordMeaning w) // Insert in proper place 
+    void insertMeaning(WordMeaning w, WordMeaning d) // Insert in proper place 
     {
         WordMeaningNode temp = new WordMeaningNode(w);
+        WordMeaningNode tempd = new WordMeaningNode(d);
 
-//        IF LIST EMPTY THROW AN ERROR beacuse not defintion witouth a word
-        if (list == null)
-        {
-            list = temp;
-        } 
-        // It is not the first node
-        else 
-        {
-            // Initialization.
+//        if (list == null)
+//        {
+//            list = temp;
+//        } 
+//        else // It is not the first node
+//        {
             WordMeaningNode current = list,
                     back = null;
             boolean found = false;
-            
-            
-            
-            // While node not null and the word is not found go thro nodes.
+
             while (current != null && !found)
             {
-                // If the temp word is equal to the one found
-                if (temp.word.getTitle().equalsIgnoreCase(current.word.getTitle()))
+                if (temp.word.getTitle().compareTo(current.word.getTitle()) < 0)
                 {
                     found = true;
-                } 
-                else
+                } else
                 {
-//                    THROW AN ERROR IF WORD NOT FOUND DO SOMETHING HEREEEEEEEEEEEEEEEEEEEEEEEEEEEE
-                    
                     back = current;
-            current = current.next;
+                    current = current.next;
                 }
             }
-            
-            
-            
+
             temp.next = current;
 
             if (back == null)
@@ -114,9 +103,22 @@ public class WordList
                 list = temp;
             } else
             {
-                back.next = temp;
+                back.next = temp;  
+               
             }
-        }
+            
+//////        TESTING  
+            back = temp;
+            current = back.next;
+            
+            //INSERTING
+            tempd.next = current;
+            back.next = tempd;
+            
+            
+            
+            
+//        }
     }
 
     public String toString()

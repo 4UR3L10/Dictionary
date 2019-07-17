@@ -39,8 +39,8 @@ public class Dictionary
                         String meaning = JOptionPane.showInputDialog("Enter the Definition:");
 
 //                        try-cathch
-                        words.insert(new WordMeaning(word));
-                        words.insertMeaning(new WordMeaning(meaning)); 
+                        //words.insert(new WordMeaning(word));
+                        words.insertMeaning(new WordMeaning(word),new WordMeaning(meaning)); 
                         break;
 
                     // Show List(s).    
