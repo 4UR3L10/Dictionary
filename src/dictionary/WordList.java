@@ -1,5 +1,7 @@
 package dictionary;
 
+import javax.swing.JOptionPane;
+
 public class WordList
 {
 //    private WordMeaningNode list, last;
@@ -11,7 +13,7 @@ public class WordList
         list = null;
     }
 
-    void insertMeaning(WordMeaning w, WordMeaning d) // Insert in proper place 
+    void insert(WordMeaning w, WordMeaning d) // Insert in proper place 
     {
         // Creating two temp nodes that hold the word and defintion.
         WordMeaningNode temp = new WordMeaningNode(w);
@@ -62,8 +64,22 @@ public class WordList
         */
         tempd.next = current;
         back.next = tempd;
-    }
+        
+        /*Asking to insert another definition.*/       
+        int tempValue = 0;
+        
+        // Keep adding definitions until user want it.
+        do
+        {
+            tempValue = askAnother();
+            
+            if(tempValue == 1)
+            {
+                
+            }
+        } while (tempValue == 1);
 
+    }
 
     public String toString()
     {
@@ -83,6 +99,53 @@ public class WordList
             }
         }
         return result;
+    }
+    
+    public int askAnother()
+    {
+        boolean endLoop = false;
+        int convertedChoice = 0;
+        String menu = "Would you like to insert another defintion for the same word?\n[1] Yes\n[2] No";
+
+        while (!endLoop)
+        {
+            // Getting the user input as String.
+            String tempString = JOptionPane.showInputDialog(menu);
+
+            try
+            {
+
+                // Converting the user input from String to int to use it in the switch statement.
+                convertedChoice = Integer.parseInt(tempString);
+
+                // MENU.
+                switch (convertedChoice)
+                {
+                    // Add another one.
+                    case 1:
+                        convertedChoice = 1;
+                        endLoop = true;
+                        break;
+
+                    // No Add.    
+                    case 2:
+                        convertedChoice = 2;
+                        endLoop = true;
+                        break;
+
+                    // Else display message none was selected.    
+                    default:
+                        JOptionPane.showMessageDialog(null, "This option is not acceptable");
+                        break;
+                }
+            } 
+            // Else there was an error about the input.
+            catch (NumberFormatException | NullPointerException e)
+            {
+                JOptionPane.showMessageDialog(null,"Enter a value");
+            }
+        }
+        return convertedChoice;
     }
     
 //    void add(WordMeaning w)// pre-pending
