@@ -77,8 +77,9 @@ public class WordList
         // Second back node.
         WordMeaningNode backSecond = null;//       testing----------------------------------------------------------------
 
-        current = lastWord.next;//      testing----------------------------------------------------------------
-
+        current = lastWord;// passing the node value      testing----------------------------------------------------------------
+//        System.out.println(current.word.getString());
+        
         // Keep adding definitions until user want it.
         do
         {
@@ -92,33 +93,34 @@ public class WordList
                 WordMeaningNode tempDefin = new WordMeaningNode(new WordMeaning(meaning));
 
                 // While there is nodes go throught the linkedlist.
+                //System.out.println(current.word.getString());             
                 while (current.word.getString().charAt(0) == '-' && !endLoop)//      testing----------------------------------------------------------------
                 {
-                    // Comparing the word with the nodes values to sort.
-                    if (tempDefin.word.getString().compareTo(current.word.getString()) < 0)//      testing----------------------------------------------------------------
-                    {
-                        endLoop = true;
-                    } else
-                    {
-                        backSecond = current;//      testing----------------------------------------------------------------
-                        current = current.next;//      testing----------------------------------------------------------------
-                    }
+                    System.out.println("+");
+//                    // Comparing the word with the nodes values to sort.
+//                    if (tempDefin.word.getString().compareTo(current.word.getString()) < 0)//      testing----------------------------------------------------------------
+//                    {
+//                        endLoop = true;
+//                    } else
+//                    {
+//                        backSecond = current;//      testing----------------------------------------------------------------
+//                        current = current.next;//      testing----------------------------------------------------------------
+//                    }
                 }
 
-                // Hold nodes so we don't erase part of the linked list.
-                tempDefin.next = current;//      testing----------------------------------------------------------------
-
-                if (backSecond == null)//      testing----------------------------------------------------------------
-                {
-                    list = tempDefin;//      testing----------------------------------------------------------------
-                } else//      testing----------------------------------------------------------------
-                {
-                    // Finish the joining.//      testing----------------------------------------------------------------
-                    backSecond.next = tempDefin;//      testing----------------------------------------------------------------
-                }
+//                // Hold nodes so we don't erase part of the linked list.
+//                tempDefin.next = current;//      testing----------------------------------------------------------------
+//
+//                if (backSecond == null)//      testing----------------------------------------------------------------
+//                {
+//                    list = tempDefin;//      testing----------------------------------------------------------------
+//                } else//      testing----------------------------------------------------------------
+//                {
+//                    // Finish the joining.//      testing----------------------------------------------------------------
+//                    backSecond.next = tempDefin;//      testing----------------------------------------------------------------
+//                }
             }
         } while (tempValue == 1);
-
     }
 
     public String toString()
@@ -188,135 +190,11 @@ public class WordList
         return convertedChoice;
     }
     
-    public void insertMultipleDef()
+    public void deleteWord(WordMeaning dw)
     {
         
-        
-        
-        
     }
-    
-//    void add(WordMeaning w)// pre-pending
-//    {
-//        WordMeaningNode temp = new WordMeaningNode(w);
-//
-//        try
-//        {
-//            if (list == null)
-//            {
-//                list = temp;
-//                last = temp;
-//            } else
-//            {
-//                last.next = temp;
-//                last = temp;
-//            }
-//        } catch (NullPointerException e)
-//        {
-//
-//        }
-//    }
-    
-//    public String toString()
-//    {
-//        String result = "";
-//        WordMeaningNode current = list;
-//
-//        while (current != null)
-//        {
-//            result += current.word.getTitle() + ",  ";
-//            current = current.next;
-//        }
-//        return result;
-//    }
-    
-//    void insert(WordMeaning w) // Insert in proper place -- Sorting
-//     {
-//        WordMeaningNode temp = new WordMeaningNode(w);
-//
-//        if (list == null)
-//        {
-//            list = temp;
-//        } 
-//        else // It is not the first node
-//        {
-//            WordMeaningNode current = list,
-//                    back = null;
-//            boolean found = false;
-//
-//            while (current != null && !found)
-//            {
-//                if (temp.word.getString().compareTo(current.word.getString()) < 0)
-//                {
-//                    found = true;
-//                } else
-//                {
-//                    back = current;
-//                    current = current.next;
-//                }
-//            }
-//
-//            temp.next = current;
-//
-//            if (back == null)
-//            {
-//                list = temp;
-//            } else
-//            {
-//                back.next = temp;
-//            }
-//        }
-//    }  
-    
-//        void insertMeaning(WordMeaning w, WordMeaning d) // Insert in proper place 
-//    {
-//        WordMeaningNode temp = new WordMeaningNode(w);
-//        WordMeaningNode tempd = new WordMeaningNode(d);
-//
-////        if (list == null)
-////        {
-////            list = temp;
-////        } 
-////        else // It is not the first node
-////        {
-//            WordMeaningNode current = list,
-//                    back = null;
-//            boolean found = false;
-//
-//            while (current != null && !found)
-//            {
-//                if (temp.word.getString().compareTo(current.word.getString()) < 0)
-//                {
-//                    found = true;
-//                } else
-//                {
-//                    back = current;
-//                    current = current.next;
-//                }
-//            }
-//
-//            temp.next = current;
-//
-//            if (back == null)
-//            {
-//                list = temp;
-//            } else
-//            {
-//                back.next = temp;  
-//               
-//            }
-//            
-////////        TESTING  
-//            back = temp;
-//            current = back.next;
-//            
-//            //INSERTING
-//            tempd.next = current;
-//            back.next = tempd;
-//            
-//            
-//            
-//            
-////        }
-//    }
+
+
+
 }

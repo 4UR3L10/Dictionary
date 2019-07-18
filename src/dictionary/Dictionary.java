@@ -13,11 +13,12 @@ public class Dictionary
     public static void main(String[] args)
     {
         // Variable Declarations.       
-        String menu = "Enter an option:\n[1] Enter Word with Meaning\n[2] Display List\n[3] Remove From The List\n[4] Exit";
+        String menu = "Enter an option:\n[1] Enter Word with Meaning\n[2] Display Lists\n[3] Remove From The List\n[4] Exit";
         boolean endLoop = false;
 
         // Create a book list object.
         WordList words = new WordList();
+        WordList deleteWords = new WordList();
 
         while (!endLoop)
         {
@@ -46,12 +47,16 @@ public class Dictionary
                     case 2:
 //                        display("Not Defined Yet", "Alert!", JOptionPane.PLAIN_MESSAGE);
                         // Showing the Attributes of the File in a Scroll Pane
-                        showScrollPane(words.toString(), "Input File Attributes", JOptionPane.INFORMATION_MESSAGE);
+                        showScrollPane(words.toString(), "Current List", JOptionPane.INFORMATION_MESSAGE);
+                        showScrollPane(deleteWords.toString(), "Deleted List", JOptionPane.INFORMATION_MESSAGE);
                         break;
                         
                     // Remove From The List.    
                     case 3:
-                        display("Not Defined Yet", "Alert!", JOptionPane.PLAIN_MESSAGE);
+                        //display("Not Defined Yet", "Alert!", JOptionPane.PLAIN_MESSAGE);
+                        // Getting the user input as String.
+                        String searchWord = JOptionPane.showInputDialog("Enter the Word:");
+                        deleteWords.deleteWord(new WordMeaning(searchWord));
                         break;    
                         
                     // EXIT.    
