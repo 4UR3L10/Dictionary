@@ -66,7 +66,7 @@ public class WordList
         back.next = tempd;
         
 ///*------Asking to insert another definition.------------------------------------------------------------------------------------------------------------------*/
-          anotherDefinition(list, back.word);
+          anotherDefinition(list, new WordMeaningNode(back.word));
 //        int tempValue = 0;
 //
 //        // Boolean to stop while loop.
@@ -110,17 +110,19 @@ public class WordList
 //            }
 //        } while (tempValue == 1);
     }
-    public void anotherDefinition(WordMeaningNode nodeList,WordMeaning lastWord)
+    public void anotherDefinition(WordMeaningNode nodeList,WordMeaningNode lastWord)
     {
         /*------Asking to insert another definition.------------------------------------------------------------------------------------------------------------------*/
         int tempValue = 0;
 
         // Boolean to stop while loop.
-        boolean endLoop = false;
+        boolean endLoopOne = false;
+        boolean endLoopTwo = false;
 
 //        // Getting the last word as a node.
 //        WordMeaningNode lastWord = new WordMeaningNode(back.word);
 
+            WordMeaningNode back = null;
         // Creating a list.
 //        WordMeaningNode nodeList = current;
         
@@ -135,18 +137,42 @@ public class WordList
 
                 // Creating one temp nodes that hold the other defintion.
                 WordMeaningNode tempDefin = new WordMeaningNode(new WordMeaning(meaning));
-
+            
                 // While there is nodes go throught the linkedlist.                          
-//                while (nodeList != null && !endLoop)//      testing----------------------------------------------------------------
-//                {                    
-//                    System.out.println(nodeList.word.getString());
-//                    nodeList = nodeList.next;                    
-//                }
-while (nodeList != null && !endLoop)//      testing----------------------------------------------------------------
-                {
+                while (nodeList != null && !endLoopOne)//      testing----------------------------------------------------------------
+                {                    
                     System.out.println(nodeList.word.getString());
-                    nodeList = nodeList.next;
+                    //nodeList = nodeList.next;                    
+                                        
+                    if(lastWord.word.getString().equalsIgnoreCase(nodeList.word.getString()))
+                    {
+                        while(nodeList.word.getString().charAt(0) == '-')
+                        {
+                            // Comparing the word with the nodes values to sort.
+                            if (tempDefin.word.getString().compareTo(nodeList.word.getString()) < 0)
+                            {
+                                endLoopOne = true;
+                            } else
+                            {
+                                back = nodeList;
+                                nodeList = nodeList.next;
+                            }
+                        }
+                        // Hold nodes so we don't erase part of the linked list.
+                        tempDefin.next = nodeList;
+
+                        if (back == null)
+                        {
+                            list = tempDefin;
+                        } else
+                        {
+                            // Finish the joining.
+                            back.next = tempDefin;
+                        }
+                    }
+                    nodeList = nodeList.next; 
                 }
+
 
 //                // Hold nodes so we don't erase part of the linked list.
 //                tempDefin.next = current;//      testing----------------------------------------------------------------
