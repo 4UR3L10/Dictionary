@@ -102,42 +102,35 @@ public class WordList
         // Boolean to stop while loop.
         boolean endLoop = false;
         
-        // Advance to the defintion from the word.
-        current = current.next;        
-        
         // While there are defnitions and the next is not null.
-        while (current.word.getString().charAt(0) == '-' && !endLoop)
-        {            
+        do
+        {
             System.out.println(current.word.getString());
-            
-            if (current.word.getString().charAt(0) != '-') //------------------------------------------------------------------------
+
+            if (current.word.getString().charAt(0) != '-') 
             {
                 endLoop = true;
             }
-            
-            
+
             if (current.next == null)
             {
                 endLoop = true;
-            } 
-            else
+            } else
             {
                 // Comparing the word with the nodes values to sort.
-                if (tempDefinition.word.getString().compareTo(current.word.getString()) < 0) // if inserDefi comes after the current.
+                // if inserting word comes first than the current.
+                if (tempDefinition.word.getString().compareTo((current.next).word.getString()) < 0) 
                 {
-                    System.out.println(tempDefinition.word.getString().compareTo(current.word.getString()));
-//                    tempDefinition.next = current.next;
-//                    current = tempDefinition;
-                      tempDefinition.next = current;
-                      back.next = tempDefinition;
-                      
+                    System.out.println(tempDefinition.word.getString().compareTo((current.next).word.getString()));
+                    tempDefinition.next = current.next;
+                    current.next = tempDefinition;
+
                     System.out.println("testttt");
                 }
-                        
-                
+
                 current = current.next;
             }
-        }       
+        } while (current.word.getString().charAt(0) == '-' && !endLoop);   
 
     }
             
@@ -183,18 +176,39 @@ public class WordList
     {
         String result = "";
         WordMeaningNode current = list;
-
+        int differentWord =  0;
+        
         while (current != null)
         {
+            
+            
             if (current.word.getString().charAt(0) == '-')
             {
-                result += current.word.getString() + "\n";
+                if (differentWord == 1)
+                {
+                
+                //result += "\t" + current.word.getString() + "\n";
+                String format = "";    
+                
+                result +=  "\t" + current.word.getString() + "\n";
                 current = current.next;
-            } else
+                differentWord = differentWord + 1; 
+                }
+                else{
+                
+                result += current.word.getString()  + "\n";
+                current = current.next;
+                differentWord = differentWord + 1;               
+                }
+            } 
+            else
             {
                 result += current.word.getString() + " ";
                 current = current.next;
+                differentWord = 0;
             }
+            
+            
         }
         return result;
     }
