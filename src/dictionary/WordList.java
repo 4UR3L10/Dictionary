@@ -89,35 +89,56 @@ public class WordList
     }
     
     // Inserting and sorting by definitions.
-    public void InsertOrganizeDefinitions(WordMeaning defintion)
+    public void InsertOrganizeDefinitions(WordMeaning definition)
     {
         // Creating a current node that will hold the value from the word founded node. 
         WordMeaningNode current = wordFounded;
         
-         // Boolean to stop while loop.
+        // Creating a temporary node 
+        WordMeaningNode back = null;
+         WordMeaningNode tempDefinition = new WordMeaningNode(definition);
+         back = current; //----------------------------------------------------------
+        
+        // Boolean to stop while loop.
         boolean endLoop = false;
         
+        // Advance to the defintion from the word.
         current = current.next;        
         
+        // While there are defnitions and the next is not null.
         while (current.word.getString().charAt(0) == '-' && !endLoop)
         {            
-            System.out.println(current.word.getString());           
-          
-            if(current.next == null)
+            System.out.println(current.word.getString());
+            
+            if (current.word.getString().charAt(0) != '-') //------------------------------------------------------------------------
             {
                 endLoop = true;
             }
-            else 
+            
+            
+            if (current.next == null)
             {
-                current = current.next;  
+                endLoop = true;
+            } 
+            else
+            {
+                // Comparing the word with the nodes values to sort.
+                if (tempDefinition.word.getString().compareTo(current.word.getString()) < 0) // if inserDefi comes after the current.
+                {
+                    System.out.println(tempDefinition.word.getString().compareTo(current.word.getString()));
+//                    tempDefinition.next = current.next;
+//                    current = tempDefinition;
+                      tempDefinition.next = current;
+                      back.next = tempDefinition;
+                      
+                    System.out.println("testttt");
+                }
+                        
+                
+                current = current.next;
             }
-           
-        }
+        }       
 
-       
-
-        
-        
     }
             
     
