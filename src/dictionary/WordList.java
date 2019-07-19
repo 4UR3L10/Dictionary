@@ -6,6 +6,7 @@ public class WordList
 {
 //    private WordMeaningNode list, last;
     private WordMeaningNode list;
+    private WordMeaningNode wordFounded;
 
     // This constructor creates an empty list.    
     WordList() 
@@ -13,7 +14,8 @@ public class WordList
         list = null;
     }
 
-    void insert(WordMeaning w, WordMeaning d) // Insert in proper place 
+    // Insert a word and a definition and order them.
+    public void insert(WordMeaning w, WordMeaning d) 
     {
         // Creating two temp nodes that hold the word and defintion.
         WordMeaningNode temp = new WordMeaningNode(w);
@@ -64,67 +66,70 @@ public class WordList
          */
         tempd.next = current;
         back.next = tempd;
-        
-///*------Asking to insert another definition.------------------------------------------------------------------------------------------------------------------*/
-          anotherDefinition(list, new WordMeaningNode(back.word));
-//        int tempValue = 0;
-//
-//        // Boolean to stop while loop.
-//        boolean endLoop = false;
-//
-//        // Getting the last word as a node.
-//        WordMeaningNode lastWord = new WordMeaningNode(back.word);
-//
-//        // Creating a list.
-////        WordMeaningNode nodeList = current;
-//        
-//        // Keep adding definitions until user want it.
-//        do
-//        {
-//            tempValue = askAnother();
-//
-//            if (tempValue == 1)
-//            {
-//                String meaning = JOptionPane.showInputDialog("Enter the Definition:");
-//
-//                // Creating one temp nodes that hold the other defintion.
-//                WordMeaningNode tempDefin = new WordMeaningNode(new WordMeaning(meaning));
-//
-//                // While there is nodes go throught the linkedlist.                          
-//                while (nodeList != null)//      testing----------------------------------------------------------------
-//                {
-//                    System.out.println("+");
-//                }
-//
-////                // Hold nodes so we don't erase part of the linked list.
-////                tempDefin.next = current;//      testing----------------------------------------------------------------
-////
-////                if (backSecond == null)//      testing----------------------------------------------------------------
-////                {
-////                    list = tempDefin;//      testing----------------------------------------------------------------
-////                } else//      testing----------------------------------------------------------------
-////                {
-////                    // Finish the joining.//      testing----------------------------------------------------------------
-////                    backSecond.next = tempDefin;//      testing----------------------------------------------------------------
-////                }
-//            }
-//        } while (tempValue == 1);
     }
-    public void anotherDefinition(WordMeaningNode nodeList,WordMeaningNode lastWord)
+        
+    // Search the word in the dictionary (nodes).
+    public boolean searchWord(WordMeaning findWord)
+    {   
+       // Creating a current node that will hold the value from the begining node. 
+       WordMeaningNode current = list; 
+        
+        while (current != null)
+        {
+            if (findWord.getString().equalsIgnoreCase(current.word.getString()))
+            {     
+                wordFounded = current;
+//                System.out.println("Next thing is: " + (wordFounded.next).word.getString());
+                return true;
+            }
+            
+            current = current.next;
+        }
+        return false;
+    }
+    
+    // Inserting and sorting by definitions.
+    public void InsertOrganizeDefinitions(WordMeaning defintion)
     {
-        /*------Asking to insert another definition.------------------------------------------------------------------------------------------------------------------*/
+        // Creating a current node that will hold the value from the word founded node. 
+        WordMeaningNode current = wordFounded;
+        
+         // Boolean to stop while loop.
+        boolean endLoop = false;
+        
+        current = current.next;        
+        
+        while (current.word.getString().charAt(0) == '-' && !endLoop)
+        {            
+            System.out.println(current.word.getString());           
+          
+            if(current.next == null)
+            {
+                endLoop = true;
+            }
+            else 
+            {
+                current = current.next;  
+            }
+           
+        }
+
+       
+
+        
+        
+    }
+            
+    
+    //anotherDefinition(list, new WordMeaningNode(back.word));
+    public void anotherDefinition(WordMeaningNode nodeList,WordMeaningNode lastWord)
+    {    
+        // Temp Value for the method.
         int tempValue = 0;
 
-        // Boolean to stop while loop.
+        // Boolean to stop while loops.
         boolean endLoopOne = false;
         boolean endLoopTwo = false;
-
-//        // Getting the last word as a node.
-//        WordMeaningNode lastWord = new WordMeaningNode(back.word);
-
-            WordMeaningNode back = null;
-        // Creating a list.
-//        WordMeaningNode nodeList = current;
         
         // Keep adding definitions until user want it.
         do
@@ -137,54 +142,14 @@ public class WordList
 
                 // Creating one temp nodes that hold the other defintion.
                 WordMeaningNode tempDefin = new WordMeaningNode(new WordMeaning(meaning));
-            
-                // While there is nodes go throught the linkedlist.                          
-                while (nodeList != null && !endLoopOne)//      testing----------------------------------------------------------------
-                {                    
-                    System.out.println(nodeList.word.getString());
-                    //nodeList = nodeList.next;                    
-                                        
-                    if(lastWord.word.getString().equalsIgnoreCase(nodeList.word.getString()))
-                    {
-                        while(nodeList.word.getString().charAt(0) == '-')
-                        {
-                            // Comparing the word with the nodes values to sort.
-                            if (tempDefin.word.getString().compareTo(nodeList.word.getString()) < 0)
-                            {
-                                endLoopOne = true;
-                            } else
-                            {
-                                back = nodeList;
-                                nodeList = nodeList.next;
-                            }
-                        }
-                        // Hold nodes so we don't erase part of the linked list.
-                        tempDefin.next = nodeList;
 
-                        if (back == null)
-                        {
-                            list = tempDefin;
-                        } else
-                        {
-                            // Finish the joining.
-                            back.next = tempDefin;
-                        }
-                    }
-                    nodeList = nodeList.next; 
+                // While there is nodes go throught the linkedlist.                          
+                while (nodeList != null)//      testing----------------------------------------------------------------
+                {
+                    System.out.println(nodeList.word.getString());
+                    nodeList = nodeList.next;             
                 }
 
-
-//                // Hold nodes so we don't erase part of the linked list.
-//                tempDefin.next = current;//      testing----------------------------------------------------------------
-//
-//                if (backSecond == null)//      testing----------------------------------------------------------------
-//                {
-//                    list = tempDefin;//      testing----------------------------------------------------------------
-//                } else//      testing----------------------------------------------------------------
-//                {
-//                    // Finish the joining.//      testing----------------------------------------------------------------
-//                    backSecond.next = tempDefin;//      testing----------------------------------------------------------------
-//                }
             }
         } while (tempValue == 1);
         
@@ -264,7 +229,18 @@ public class WordList
     {
         
     }
-
-
+        
+//    public String toString()
+//    {
+//        String result = "";
+//        WordMeaningNode current = list;
+//
+//        while (current != null)
+//        {
+//            result += current.word.getString() + ",  ";
+//            current = current.next;
+//        }
+//        return result;
+//    }
 
 }

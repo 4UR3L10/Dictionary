@@ -13,7 +13,7 @@ public class Dictionary
     public static void main(String[] args)
     {
         // Variable Declarations.       
-        String menu = "Enter an option:\n[1] Enter Word with Meaning\n[2] Display Lists\n[3] Remove From The List\n[4] Exit";
+        String menu = "Enter an option:\n[1] Enter Word with Meaning\n[2] Enter Meaning\n[3] Display Lists\n[4] Remove From The List\n[5] Exit";
         boolean endLoop = false;
 
         // Create a book list object.
@@ -42,9 +42,25 @@ public class Dictionary
 //                        try-cathch
                         words.insert(new WordMeaning(word),new WordMeaning(meaning)); 
                         break;
-
-                    // Show List(s).    
+                    
+                    // Add meaning(s).    
                     case 2:
+                        // Getting the user input as String.
+                        String findWord = JOptionPane.showInputDialog("Enter the Word:");
+                        if(words.searchWord(new WordMeaning(findWord)))
+                        {
+                           String insertMeaning = JOptionPane.showInputDialog("Enter the Definition:"); 
+                           words.InsertOrganizeDefinitions(new WordMeaning(insertMeaning));
+                        }
+                        else
+                        {
+                            System.out.println("word not found");
+                        }
+                        
+                        break;    
+                        
+                    // Show List(s).    
+                    case 3:
 //                        display("Not Defined Yet", "Alert!", JOptionPane.PLAIN_MESSAGE);
                         // Showing the Attributes of the File in a Scroll Pane
                         showScrollPane(words.toString(), "Current List", JOptionPane.INFORMATION_MESSAGE);
@@ -52,7 +68,7 @@ public class Dictionary
                         break;
                         
                     // Remove From The List.    
-                    case 3:
+                    case 4:
                         //display("Not Defined Yet", "Alert!", JOptionPane.PLAIN_MESSAGE);
                         // Getting the user input as String.
                         String searchWord = JOptionPane.showInputDialog("Enter the Word:");
@@ -60,7 +76,7 @@ public class Dictionary
                         break;    
                         
                     // EXIT.    
-                    case 4:
+                    case 5:
                         endLoop = true;
                         break;
 
