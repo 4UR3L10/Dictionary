@@ -79,7 +79,6 @@ public class WordList
             if (findWord.getString().equalsIgnoreCase(current.word.getString()))
             {     
                 wordFounded = current;
-//                System.out.println("Next thing is: " + (wordFounded.next).word.getString());
                 return true;
             }
             
@@ -92,7 +91,8 @@ public class WordList
     public void InsertOrganizeDefinitions(WordMeaning definition)
     {
         // Creating a current node that will hold the value from the word founded node. 
-        WordMeaningNode current = wordFounded;
+        //WordMeaningNode current = wordFounded;
+        WordMeaningNode current = wordFounded.next;
         
         // Creating a temporary node 
         WordMeaningNode back = null;
@@ -110,32 +110,46 @@ public class WordList
             if (current.word.getString().charAt(0) != '-') 
             {
                 endLoop = true;
+                tempDefinition.next = current;
+                back.next = tempDefinition;
             }
 
             if (current.next == null)
             {
                 endLoop = true;
-            } else
+//                current.next = tempDefinition; good
+
+                if (tempDefinition.word.getString().compareTo(current.word.getString()) < 0) //testing
+                {//testing
+                    tempDefinition.next = current;//testing
+                    wordFounded.next = tempDefinition;//testing
+                }//testing
+                else//testing
+                {//testing
+                    current.next = tempDefinition;
+                }//testing
+            } 
+            else
             {
                 // Comparing the word with the nodes values to sort.
                 // if inserting word comes first than the current.
-                if (tempDefinition.word.getString().compareTo((current.next).word.getString()) < 0) 
+                //if (tempDefinition.word.getString().compareTo((current.next).word.getString()) < 0)
+                if (tempDefinition.word.getString().compareTo(current.word.getString()) < 0)
                 {
-                    System.out.println(tempDefinition.word.getString().compareTo((current.next).word.getString()));
-                    tempDefinition.next = current.next;
-                    current.next = tempDefinition;
-
-                    System.out.println("testttt");
+//                    tempDefinition.next = current.next;
+                      tempDefinition.next = current;
+                      back.next = tempDefinition;
+//                    current.next = tempDefinition;
                 }
-
-                current = current.next;
+                    back = current;
+                    
+                    current = current.next;
             }
         } while (current.word.getString().charAt(0) == '-' && !endLoop);   
-
     }
             
     
-    //anotherDefinition(list, new WordMeaningNode(back.word));
+    //anotherDefinition(list, new WordMeaningNode(back.word));//------------------------------------------------------------------
     public void anotherDefinition(WordMeaningNode nodeList,WordMeaningNode lastWord)
     {    
         // Temp Value for the method.
@@ -176,39 +190,34 @@ public class WordList
     {
         String result = "";
         WordMeaningNode current = list;
-        int differentWord =  0;
-        
+        int differentWord = 0;
+
         while (current != null)
         {
-            
-            
+
             if (current.word.getString().charAt(0) == '-')
             {
                 if (differentWord == 1)
                 {
-                
-                //result += "\t" + current.word.getString() + "\n";
-                String format = "";    
-                
-                result +=  "\t" + current.word.getString() + "\n";
-                current = current.next;
-                differentWord = differentWord + 1; 
+                    result += "" + current.word.getString() + "\n";
+                    current = current.next;
+                    differentWord = differentWord + 1;
+                } 
+                else
+                {
+
+                    result += current.word.getString() + "\n";
+                    current = current.next;
+                    differentWord = differentWord + 1;
                 }
-                else{
-                
-                result += current.word.getString()  + "\n";
-                current = current.next;
-                differentWord = differentWord + 1;               
-                }
-            } 
+            }
             else
             {
                 result += current.word.getString() + " ";
                 current = current.next;
                 differentWord = 0;
             }
-            
-            
+
         }
         return result;
     }
@@ -264,18 +273,6 @@ public class WordList
     {
         
     }
-        
-//    public String toString()
-//    {
-//        String result = "";
-//        WordMeaningNode current = list;
-//
-//        while (current != null)
-//        {
-//            result += current.word.getString() + ",  ";
-//            current = current.next;
-//        }
-//        return result;
-//    }
+
 
 }
