@@ -7,6 +7,8 @@ public class WordList
 //    private WordMeaningNode list, last;
     private WordMeaningNode list;
     private WordMeaningNode wordFounded;
+    private WordMeaningNode wordBeforeFounded;
+    private WordMeaningNode deleteList;
 
     // This constructor creates an empty list.    
     WordList() 
@@ -81,7 +83,7 @@ public class WordList
                 wordFounded = current;
                 return true;
             }
-            
+            wordBeforeFounded = current;
             current = current.next;
         }
         return false;
@@ -147,49 +149,47 @@ public class WordList
             }
         } while (current.word.getString().charAt(0) == '-' && !endLoop);   
     }
-            
-    
-    //anotherDefinition(list, new WordMeaningNode(back.word));//------------------------------------------------------------------
-    public void anotherDefinition(WordMeaningNode nodeList,WordMeaningNode lastWord)
-    {    
-        // Temp Value for the method.
-        int tempValue = 0;
-
-        // Boolean to stop while loops.
-        boolean endLoopOne = false;
-        boolean endLoopTwo = false;
-        
-        // Keep adding definitions until user want it.
-        do
-        {
-            tempValue = askAnother();
-
-            if (tempValue == 1)
-            {
-                String meaning = JOptionPane.showInputDialog("Enter the Definition:");
-
-                // Creating one temp nodes that hold the other defintion.
-                WordMeaningNode tempDefin = new WordMeaningNode(new WordMeaning(meaning));
-
-                // While there is nodes go throught the linkedlist.                          
-                while (nodeList != null)//      testing----------------------------------------------------------------
-                {
-                    System.out.println(nodeList.word.getString());
-                    nodeList = nodeList.next;             
-                }
-
-            }
-        } while (tempValue == 1);
-        
-        
-        
-    }
-    
 
     public String toString()
     {
         String result = "";
         WordMeaningNode current = list;
+        int differentWord = 0;
+
+        while (current != null)
+        {
+
+            if (current.word.getString().charAt(0) == '-')
+            {
+                if (differentWord == 1)
+                {
+                    result += "" + current.word.getString() + "\n";
+                    current = current.next;
+                    differentWord = differentWord + 1;
+                } 
+                else
+                {
+
+                    result += current.word.getString() + "\n";
+                    current = current.next;
+                    differentWord = differentWord + 1;
+                }
+            }
+            else
+            {
+                result += current.word.getString() + " ";
+                current = current.next;
+                differentWord = 0;
+            }
+
+        }
+        return result;
+    }
+    
+        public String deleteToString()
+    {
+        String result = "";
+        WordMeaningNode current = deleteList;
         int differentWord = 0;
 
         while (current != null)
@@ -269,9 +269,37 @@ public class WordList
         return convertedChoice;
     }
     
-    public void deleteWord(WordMeaning dw)
+    public void deleteWord(WordMeaning deleteWord)
     {
+        // Creating a temporary node 
+        WordMeaningNode delete = new WordMeaningNode(deleteWord);
+        WordMeaningNode current = wordFounded;
+        WordMeaningNode temporary = wordFounded;
+
+        // Boolean to stop while loop.
+        boolean endLoop = false;
         
+        while ((current.next).word.getString().charAt(0) == '-' && !endLoop)
+        {
+            
+            if((current.next).word.getString().charAt(0) != '-' || current.next == null)
+            {
+                endLoop = true;
+                
+                delete.next = wordFounded;
+                
+                temporary.next = current;               
+                
+                wordBeforeFounded.next = temporary;
+                
+                deleteList = delete;               
+            }
+            else
+            {
+               temporary = current;
+               current = current.next;               
+            }            
+        }
     }
 
 

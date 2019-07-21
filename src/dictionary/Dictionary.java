@@ -39,7 +39,7 @@ public class Dictionary
                         String word = JOptionPane.showInputDialog("Enter the Word:");
                         String meaning = JOptionPane.showInputDialog("Enter the Definition:");
 
-//                        try-cathch
+//                       try-cathch(own exception)(validate for definiton)
                         words.insert(new WordMeaning(word),new WordMeaning(meaning)); 
                         break;
                     
@@ -54,6 +54,7 @@ public class Dictionary
                         }
                         else
                         {
+                            // joption pane and try catch (validate for definiton)
                             System.out.println("word not found");
                         }
                         
@@ -61,18 +62,25 @@ public class Dictionary
                         
                     // Show List(s).    
                     case 3:
-//                        display("Not Defined Yet", "Alert!", JOptionPane.PLAIN_MESSAGE);
                         // Showing the Attributes of the File in a Scroll Pane
                         showScrollPane(words.toString(), "Current List", JOptionPane.INFORMATION_MESSAGE);
-                        showScrollPane(deleteWords.toString(), "Deleted List", JOptionPane.INFORMATION_MESSAGE);
+                        showScrollPane(words.deleteToString(), "Deleted List", JOptionPane.INFORMATION_MESSAGE);
                         break;
                         
                     // Remove From The List.    
                     case 4:
-                        //display("Not Defined Yet", "Alert!", JOptionPane.PLAIN_MESSAGE);
                         // Getting the user input as String.
                         String searchWord = JOptionPane.showInputDialog("Enter the Word:");
-                        deleteWords.deleteWord(new WordMeaning(searchWord));
+                        if(words.searchWord(new WordMeaning(searchWord)))
+                        {
+                           words.deleteWord(new WordMeaning(searchWord));
+                        }
+                        else
+                        {
+                            // joption pane and try catch (validate for word)
+                            System.out.println("word not found");
+                        }
+                        
                         break;    
                         
                     // EXIT.    
