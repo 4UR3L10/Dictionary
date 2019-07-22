@@ -2,15 +2,15 @@ package dictionary;
 
 public class WordMeaning
 {
-    String title;
+    String wordName;
 
-    WordMeaning(String t)
+    WordMeaning(String wn)
     {
-        this.title = t;
+        this.wordName = wn;
     }
 
-    public String getTitle()
+    public String getString()
     {
-        return title;
+        return wordName;
     }
 }

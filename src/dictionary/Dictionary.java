@@ -1,6 +1,8 @@
 package dictionary;
 
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public class Dictionary
 {
@@ -11,11 +13,11 @@ public class Dictionary
     public static void main(String[] args)
     {
         // Variable Declarations.       
-        String menu = "Enter an option:\n[1] Enter Word with Meaning\n[2] Display List\n[3] Remove From The List\n[4] Exit";
+        String menu = "Enter an option:\n[1] Enter Word\n[2] Enter Definition\n[3] Display Lists\n[4] Remove From The List\n[5] Exit";
         boolean endLoop = false;
 
         // Create a book list object.
-//        BookList books = new BookList();
+        WordList words = new WordList();       
 
         while (!endLoop)
         {
@@ -30,23 +32,68 @@ public class Dictionary
                 // MENU.
                 switch (convertedChoice)
                 {
-                    // Accept word with meaning.
+                    // Accept word.
                     case 1:
-                        display("Not Defined Yet", "Alert!", JOptionPane.PLAIN_MESSAGE);
+                        // Getting the user input as String.
+                        String word = JOptionPane.showInputDialog("Enter the Word:");
+                        words.insertWord(new WordMeaning(word)); 
                         break;
-                        
-                    // Show List.    
+                    
+                    // Add meaning(s).    
                     case 2:
-                        display("Not Defined Yet", "Alert!", JOptionPane.PLAIN_MESSAGE);
+                        // Getting the user input as String.
+                        String findWord = JOptionPane.showInputDialog("Enter the Word:");
+                        if (words.searchWord(new WordMeaning(findWord)))
+                        {
+                            String insertMeaning = JOptionPane.showInputDialog("Enter the Definition:");
+                           
+                            try
+                            {
+                                if (insertMeaning.charAt(0) == '-')
+                                {
+                                    words.insertDefinition(new WordMeaning(insertMeaning));
+                                }
+                                else
+                                {
+                                    throw new MyException(insertMeaning);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                display(e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                        else
+                        {
+                            // try catch (validate for definiton)
+                            display("Word Not Found", "Error", JOptionPane.ERROR_MESSAGE);                       
+                        }
+                        
+                        break;    
+                        
+                    // Show List(s).    
+                    case 3:
+                        // Showing the Attributes of the File in a Scroll Pane
+                        showScrollPane(words.toString(), "Current List", JOptionPane.INFORMATION_MESSAGE);
+                        showScrollPane(words.deleteToString(), "Deleted List", JOptionPane.INFORMATION_MESSAGE);                        
                         break;
                         
-                    // Show List.    
-                    case 3:
-                        display("Not Defined Yet", "Alert!", JOptionPane.PLAIN_MESSAGE);
+                    // Remove From The List.    
+                    case 4:
+                        // Getting the user input as String.
+                        String searchWord = JOptionPane.showInputDialog("Enter the Word:");
+                        if(words.searchWord(new WordMeaning(searchWord)))
+                        {
+                           words.deleteWord(new WordMeaning(searchWord));
+                        }
+                        else
+                        {
+                            display("Word Not Found", "Error", JOptionPane.ERROR_MESSAGE);         
+                        }                        
                         break;    
                         
                     // EXIT.    
-                    case 4:
+                    case 5:
                         endLoop = true;
                         break;
 
@@ -62,18 +109,19 @@ public class Dictionary
                 display("Enter a value", e.toString(), JOptionPane.ERROR_MESSAGE);
             }
         }
-
-//        books.insert(new Book("Danger on the Waters"));
-//        books.insert(new Book("Paradise Lost"));
-//        books.insert(new Book("Building Bridges"));
-//        books.insert(new Book("Hall Mark of Fame"));
-
-//        System.out.println(books.toString());
     }
     
     // Template Method for Messages.
     static void display(String message, String windowsName, int typeOfMessage)
     {
         JOptionPane.showMessageDialog(null, message, windowsName, typeOfMessage);
+    }
+    
+    // Method for the scroll pane.
+    static void showScrollPane(String resultString, String heading, int MESSAGE_TYPE)
+    {
+        JTextArea textAreaObject = new JTextArea(resultString, 20, 50);
+        JScrollPane scrollPaneObject = new JScrollPane(textAreaObject);
+        JOptionPane.showMessageDialog(null, scrollPaneObject, heading, MESSAGE_TYPE);
     }
 }
