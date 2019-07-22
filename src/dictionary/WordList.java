@@ -4,70 +4,85 @@ import javax.swing.JOptionPane;
 
 public class WordList
 {
-//    private WordMeaningNode list, last;
     private WordMeaningNode list;
     private WordMeaningNode wordFounded;
-    private WordMeaningNode wordBeforeFounded;
+    private WordMeaningNode nodeBeforeFounded;
     private WordMeaningNode deleteList;
 
     // This constructor creates an empty list.    
     WordList() 
     {
         list = null;
+        deleteList = null;
     }
 
-    // Insert a word and a definition and order them.
-    public void insert(WordMeaning w, WordMeaning d) 
+    // This methods insert words.
+    void insertWord(WordMeaning wm)
     {
-        // Creating two temp nodes that hold the word and defintion.
-        WordMeaningNode temp = new WordMeaningNode(w);
-        WordMeaningNode tempd = new WordMeaningNode(d);
-        
-        // Creating two temp nodes that will hold the node before and after the current node.
-        WordMeaningNode current = list;   
-        WordMeaningNode back = null;
-        
-        // Boolean to stop while loop.
-        boolean found = false;
+        // This is the [Word-Node] that is going to be inserted in the list. 
+        WordMeaningNode wordToBeInserted = new WordMeaningNode(wm);
 
-        // While there is nodes go throught the linkedlist.
-        while (current != null && !found)
+        // Case (1) - Empty List.
+        // If the list is empty insert the [Word-Node] directly to the list.
+        if (list == null)
         {
-            // Comparing the word with the nodes values to sort.
-            if (temp.word.getString().compareTo(current.word.getString()) < 0)
+            list = wordToBeInserted;
+        }
+        // If the list is not empty.
+        else
+        {
+            // Create a [Word-Node] that is going to start from the beginning of the list.
+            WordMeaningNode currentNode = list;
+
+            // Create a [Word-Node] that is going to start getting the values that current had (The one before).
+            WordMeaningNode backNodeOfCurrent = null;
+
+            // A boolean to finish the loop
+            boolean endLoop = false;
+
+            // While the current node is not empty keep going through the list.
+            // Implicit Case (3) - List no empty but word comes after the last node when current is null but the place for the word has not been found.
+            while (currentNode != null && !endLoop)
             {
-                found = true;
-            } else
+                // If the word to be inserted comes just before the one that is being reading finish the search. 
+                if (wordToBeInserted.word.getString().compareTo(currentNode.word.getString()) < 0)
+                {
+                    endLoop = true;
+                }
+                /*
+                If the word to be inserted comes after the one that is being reading.
+                Each Time.
+                Pass the value of the current node to the back node to get the value that comes before the current node.
+                Advance to the next node.
+                 */
+                else
+                {
+                    // Pass the value of the current node to the back node to get the value that comes before the current node.
+                    backNodeOfCurrent = currentNode;
+
+                    // Advance to the next node. (Take the next node value and assign it to the current one)
+                    currentNode = currentNode.next;
+                }
+            }
+
+            // Once the word has found it is proper place on the list.
+            // Cut the nodes that come after the current word.
+            // And assign it after the insertedWord.
+            wordToBeInserted.next = currentNode;
+
+            // Case (2) - List no empty but word comes before the first node.
+            // If the node back of the current is null (If the backNode is [Null] before the begining of the list)
+            if (backNodeOfCurrent == null)
             {
-                back = current;
-                current = current.next;
+                list = wordToBeInserted;
+            }
+            // Case (4) - List no empty but word goes between two nodes.
+            // Join the back list with the one we cut. 
+            else
+            {
+                backNodeOfCurrent.next = wordToBeInserted;
             }
         }
-
-        // Hold nodes so we don't erase part of the linked list.
-        temp.next = current;
-
-        if (back == null)
-        {
-            list = temp;
-        } else
-        {
-            // Finish the joining.
-            back.next = temp;
-        }
-
-        /*Modifiying the values.*/
-        // The inserted now is the back.      
-        back = temp;
-        // The next node of the back is now the current.
-        current = back.next;
-
-        /* 
-        Doing the insertion of the definition next to the word
-        without losing any nodes of the linkedlist.
-         */
-        tempd.next = current;
-        back.next = tempd;
     }
         
     // Search the word in the dictionary (nodes).
@@ -83,73 +98,62 @@ public class WordList
                 wordFounded = current;
                 return true;
             }
-            wordBeforeFounded = current;
+            nodeBeforeFounded = current;
             current = current.next;
         }
         return false;
     }
     
-    // Inserting and sorting by definitions.
-    public void InsertOrganizeDefinitions(WordMeaning definition)
+    // This method inserts definitions.
+    void insertDefinition(WordMeaning d)
     {
-        // Creating a current node that will hold the value from the word founded node. 
-        //WordMeaningNode current = wordFounded;
-        WordMeaningNode current = wordFounded.next;
-        
-        // Creating a temporary node 
-        WordMeaningNode back = null;
-         WordMeaningNode tempDefinition = new WordMeaningNode(definition);
-         back = current; //----------------------------------------------------------
-        
-        // Boolean to stop while loop.
+        // This is the [Definition-Node] that is going to be inserted in the list. 
+        WordMeaningNode definitionToBeInserted = new WordMeaningNode(d);
+
+        // Create a [Definition-Node] that is going to start from the beginning of the definitions of the word.
+        WordMeaningNode currentNode = wordFounded.next;
+
+        // Create a [Definition-Node] that is going to start getting the values that current had (The one before).
+        WordMeaningNode backNodeOfCurrent = wordFounded;
+
+        // A boolean to finish the loop
         boolean endLoop = false;
-        
-        // While there are defnitions and the next is not null.
-        do
+      
+        // While the current node is a definition keep going through the list.
+        // Implicit Case (3) - List no empty but definition comes after the last definition node when current is word but the place for the word has not been found.           
+        while (currentNode != null && !endLoop)
         {
-            System.out.println(current.word.getString());
-
-            if (current.word.getString().charAt(0) != '-') 
+            // If the definition to be inserted comes just before the one that is being reading finish the search. 
+            if (definitionToBeInserted.word.getString().compareTo(currentNode.word.getString()) < 0)
             {
                 endLoop = true;
-                tempDefinition.next = current;
-                back.next = tempDefinition;
             }
-
-            if (current.next == null)
-            {
-                endLoop = true;
-//                current.next = tempDefinition; good
-
-                if (tempDefinition.word.getString().compareTo(current.word.getString()) < 0) //testing
-                {//testing
-                    tempDefinition.next = current;//testing
-                    wordFounded.next = tempDefinition;//testing
-                }//testing
-                else//testing
-                {//testing
-                    current.next = tempDefinition;
-                }//testing
-            } 
+            /*
+                If the definition to be inserted comes after the one that is being reading.
+                Each Time:
+                Pass the value of the current node to the back node to get the value that comes before the current node.
+                then Advance to the next node.
+             */
             else
             {
-                // Comparing the word with the nodes values to sort.
-                // if inserting word comes first than the current.
-                //if (tempDefinition.word.getString().compareTo((current.next).word.getString()) < 0)
-                if (tempDefinition.word.getString().compareTo(current.word.getString()) < 0)
-                {
-//                    tempDefinition.next = current.next;
-                      tempDefinition.next = current;
-                      back.next = tempDefinition;
-//                    current.next = tempDefinition;
-                }
-                    back = current;
-                    
-                    current = current.next;
-            }
-        } while (current.word.getString().charAt(0) == '-' && !endLoop);   
-    }
+                // Pass the value of the current node to the back node to get the value that comes before the current node.
+                backNodeOfCurrent = currentNode;
 
+                // Advance to the next node. (Take the next node value and assign it to the current one)
+                currentNode = currentNode.next;
+            }
+        }
+
+        // Once the word has found it is proper place on the list.
+        // Cut the nodes that come after the current word.
+        // And assign it after the insertedWord.
+        definitionToBeInserted.next = currentNode;
+        // Case (2) - List no empty but defintion goes between two nodes.
+        // Join the back list with the one we cut.
+        backNodeOfCurrent.next = definitionToBeInserted;
+    }
+    
+    // Shows the list with words (Actual Dictionary).
     public String toString()
     {
         String result = "";
@@ -186,40 +190,122 @@ public class WordList
         return result;
     }
     
-        public String deleteToString()
+    // Insert the deleted word into the deleted list.
+    public void insertDeleteWord(WordMeaning dw)
+    {
+      // This is the [Word-Node] that is going to be inserted in the list. 
+      WordMeaningNode wordToBeInserted = new WordMeaningNode(dw);
+      
+      // Case (1) - Empty List.
+        // If the list is empty insert the [Word-Node] directly to the list.
+        if (deleteList == null)
+        {
+            deleteList = wordToBeInserted;
+        }
+        // If the list is not empty.
+        else
+        {
+            // Create a [Word-Node] that is going to start from the beginning of the list.
+            WordMeaningNode currentNode = deleteList;
+
+            // Create a [Word-Node] that is going to start getting the values that current had (The one before).
+            WordMeaningNode backNodeOfCurrent = null;
+
+            // A boolean to finish the loop
+            boolean endLoop = false;
+
+            // While the current node is not empty keep going through the list.
+            // Implicit Case (3) - List no empty but word comes after the last node when current is null but the place for the word has not been found.
+            while (currentNode != null && !endLoop)
+            {
+                // If the word to be inserted comes just before the one that is being reading finish the search. 
+                if (wordToBeInserted.word.getString().compareTo(currentNode.word.getString()) < 0)
+                {
+                    endLoop = true;
+                }
+                /*
+                If the word to be inserted comes after the one that is being reading.
+                Each Time.
+                Pass the value of the current node to the back node to get the value that comes before the current node.
+                Advance to the next node.
+                 */
+                else
+                {
+                    // Pass the value of the current node to the back node to get the value that comes before the current node.
+                    backNodeOfCurrent = currentNode;
+
+                    // Advance to the next node. (Take the next node value and assign it to the current one)
+                    currentNode = currentNode.next;
+                }
+            }
+
+            // Once the word has found it is proper place on the list.
+            // Cut the nodes that come after the current word.
+            // And assign it after the insertedWord.
+            wordToBeInserted.next = currentNode;
+
+            // Case (2) - List no empty but word comes before the first node.
+            // If the node back of the current is null (If the backNode is [Null] before the begining of the list)
+            if (backNodeOfCurrent == null)
+            {
+                deleteList = wordToBeInserted;
+            }
+            // Case (4) - List no empty but word goes between two nodes.
+            // Join the back list with the one we cut. 
+            else
+            {
+                backNodeOfCurrent.next = wordToBeInserted;
+            }
+        }
+        
+    }
+    
+    // Shows the deleted list.
+    public String deleteToString()
     {
         String result = "";
         WordMeaningNode current = deleteList;
-        int differentWord = 0;
 
         while (current != null)
         {
+                result += current.word.getString() + ", ";
+                current = current.next;
+        }
+        return result;
+    }    
 
-            if (current.word.getString().charAt(0) == '-')
+    public void deleteWord(WordMeaning w)
+    {
+        // Create a [Current-Node] that is going to start from the beginning of the definitions of the word.
+        WordMeaningNode currentNode = wordFounded.next;
+
+        // Create a temporary node to hold the deleted part of the list when par of the is cut.
+        WordMeaningNode deleteList = null;
+
+        // A boolean to finish the loop
+        boolean endLoop = false;
+
+        // While the current node is a definition keep going through the list.
+        while (currentNode != null && !endLoop)
+        {
+            // If the next node is a word means that it reached the end of the part of the list that is going to be delete it. 
+            if (currentNode.word.getString().charAt(0) != '-')
             {
-                if (differentWord == 1)
-                {
-                    result += "" + current.word.getString() + "\n";
-                    current = current.next;
-                    differentWord = differentWord + 1;
-                } 
-                else
-                {
-
-                    result += current.word.getString() + "\n";
-                    current = current.next;
-                    differentWord = differentWord + 1;
-                }
+                endLoop = true;                
             }
             else
             {
-                result += current.word.getString() + " ";
-                current = current.next;
-                differentWord = 0;
+                // Advance to the next node. (Take the next node value and assign it to the current one)
+                currentNode = currentNode.next;
             }
-
         }
-        return result;
+        
+        
+        // Once we know where the list is going to be cut.
+        deleteList = wordFounded;
+        nodeBeforeFounded.next = currentNode;
+        // Add to the list
+        insertDeleteWord(deleteList.word);
     }
     
     public int askAnother()
@@ -268,39 +354,4 @@ public class WordList
         }
         return convertedChoice;
     }
-    
-    public void deleteWord(WordMeaning deleteWord)
-    {
-        // Creating a temporary node 
-        WordMeaningNode delete = new WordMeaningNode(deleteWord);
-        WordMeaningNode current = wordFounded;
-        WordMeaningNode temporary = wordFounded;
-
-        // Boolean to stop while loop.
-        boolean endLoop = false;
-        
-        while ((current.next).word.getString().charAt(0) == '-' && !endLoop)
-        {
-            
-            if((current.next).word.getString().charAt(0) != '-' || current.next == null)
-            {
-                endLoop = true;
-                
-                delete.next = wordFounded;
-                
-                temporary.next = current;               
-                
-                wordBeforeFounded.next = temporary;
-                
-                deleteList = delete;               
-            }
-            else
-            {
-               temporary = current;
-               current = current.next;               
-            }            
-        }
-    }
-
-
 }

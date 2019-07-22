@@ -13,12 +13,11 @@ public class Dictionary
     public static void main(String[] args)
     {
         // Variable Declarations.       
-        String menu = "Enter an option:\n[1] Enter Word with Meaning\n[2] Enter Meaning\n[3] Display Lists\n[4] Remove From The List\n[5] Exit";
+        String menu = "Enter an option:\n[1] Enter Word\n[2] Enter Definition\n[3] Display Lists\n[4] Remove From The List\n[5] Exit";
         boolean endLoop = false;
 
         // Create a book list object.
-        WordList words = new WordList();
-        WordList deleteWords = new WordList();
+        WordList words = new WordList();       
 
         while (!endLoop)
         {
@@ -33,29 +32,41 @@ public class Dictionary
                 // MENU.
                 switch (convertedChoice)
                 {
-                    // Accept word with meaning.
+                    // Accept word.
                     case 1:
                         // Getting the user input as String.
                         String word = JOptionPane.showInputDialog("Enter the Word:");
-                        String meaning = JOptionPane.showInputDialog("Enter the Definition:");
-
-//                       try-cathch(own exception)(validate for definiton)
-                        words.insert(new WordMeaning(word),new WordMeaning(meaning)); 
+                        words.insertWord(new WordMeaning(word)); 
                         break;
                     
                     // Add meaning(s).    
                     case 2:
                         // Getting the user input as String.
                         String findWord = JOptionPane.showInputDialog("Enter the Word:");
-                        if(words.searchWord(new WordMeaning(findWord)))
+                        if (words.searchWord(new WordMeaning(findWord)))
                         {
-                           String insertMeaning = JOptionPane.showInputDialog("Enter the Definition:"); 
-                           words.InsertOrganizeDefinitions(new WordMeaning(insertMeaning));
+                            String insertMeaning = JOptionPane.showInputDialog("Enter the Definition:");
+                           
+                            try
+                            {
+                                if (insertMeaning.charAt(0) == '-')
+                                {
+                                    words.insertDefinition(new WordMeaning(insertMeaning));
+                                }
+                                else
+                                {
+                                    throw new MyException(insertMeaning);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                display(e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+                            }
                         }
                         else
                         {
-                            // joption pane and try catch (validate for definiton)
-                            System.out.println("word not found");
+                            // try catch (validate for definiton)
+                            display("Word Not Found", "Error", JOptionPane.ERROR_MESSAGE);                       
                         }
                         
                         break;    
@@ -64,7 +75,7 @@ public class Dictionary
                     case 3:
                         // Showing the Attributes of the File in a Scroll Pane
                         showScrollPane(words.toString(), "Current List", JOptionPane.INFORMATION_MESSAGE);
-                        showScrollPane(words.deleteToString(), "Deleted List", JOptionPane.INFORMATION_MESSAGE);
+                        showScrollPane(words.deleteToString(), "Deleted List", JOptionPane.INFORMATION_MESSAGE);                        
                         break;
                         
                     // Remove From The List.    
@@ -77,10 +88,8 @@ public class Dictionary
                         }
                         else
                         {
-                            // joption pane and try catch (validate for word)
-                            System.out.println("word not found");
-                        }
-                        
+                            display("Word Not Found", "Error", JOptionPane.ERROR_MESSAGE);         
+                        }                        
                         break;    
                         
                     // EXIT.    
@@ -100,13 +109,6 @@ public class Dictionary
                 display("Enter a value", e.toString(), JOptionPane.ERROR_MESSAGE);
             }
         }
-
-//        books.insert(new Book("Danger on the Waters"));
-//        books.insert(new Book("Paradise Lost"));
-//        books.insert(new Book("Building Bridges"));
-//        books.insert(new Book("Hall Mark of Fame"));
-
-//        System.out.println(books.toString());
     }
     
     // Template Method for Messages.
